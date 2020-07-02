@@ -1,10 +1,14 @@
 package routers
+
 import (
-	"github.com/gin-gonic/gin"
 	"blog-go/middleware"
+	"blog-go/utils/response"
+
+	"github.com/gin-gonic/gin"
 )
+
 // SetupRouter 初始化gin入口，路由信息
-func SetupRouter() *gin.Engine{
+func SetupRouter() *gin.Engine {
 	router := gin.New()
 	if err := middleware.InitLogger(); err != nil {
 		panic(err)
@@ -13,7 +17,7 @@ func SetupRouter() *gin.Engine{
 		middleware.GinRecovery(middleware.Logger, true))
 
 	router.GET("/hello", func(c *gin.Context) {
-		c.String(200, "hello world")
+		response.Success(c, "hello world")
 	})
 	return router
 }
