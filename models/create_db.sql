@@ -16,7 +16,7 @@ CREATE TABLE `article`  (
   `status` int UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
   `summary` varchar(256) NOT NULL COMMENT '文章摘要',
   `created_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '发布时间',
-  `updated_at` datetime  NOT NULL ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+  `updated_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
   `deleted_at` datetime NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_view_count`(`view_count`) USING BTREE COMMENT '阅读次数索引',
@@ -33,7 +33,7 @@ CREATE TABLE `category`  (
   `category_name` varchar(255) NOT NULL COMMENT '分类名字',
   `category_no` int UNSIGNED NOT NULL COMMENT '分类排序',
   `created_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '发布时间',
-  `updated_at` datetime  NOT NULL ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+  `updated_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
   `deleted_at` datetime NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -57,7 +57,7 @@ CREATE TABLE `comment`  (
   `content` text  NOT NULL COMMENT '评论内容',
   `username` varchar(64)  NOT NULL COMMENT '评论作者',
   `created_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '发布时间',
-  `updated_at` datetime  NOT NULL ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+  `updated_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
   `deleted_at` datetime NULL COMMENT '删除时间',
   `status` int UNSIGNED NOT NULL COMMENT '评论状态: 0, 删除；1， 正常',
   `article_id` int UNSIGNED NULL DEFAULT NULL,
@@ -73,9 +73,30 @@ CREATE TABLE `leave`  (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `created_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '发布时间',
-  `updated_at` datetime  NOT NULL ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+  `updated_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
   `deleted_at` datetime NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for leave
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '留言id',
+  `created_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '发布时间',
+  `updated_at` datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT '更新时间',
+  `deleted_at` datetime NULL COMMENT '删除时间',
+  `user_id` int UNSIGNED NOT NULL,
+  `username` varchar(16) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `telephone` int UNSIGNED NULL,
+  `avatar` varchar(64) NOT NULL,
+  `nick_name` varchar(16) NULL,
+  `email` varchar(64) NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
 
 SET FOREIGN_KEY_CHECKS = 1;

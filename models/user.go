@@ -1,16 +1,13 @@
-package model
-
-import (
-	"time"
-)
+package models
 
 // User 用户表
-var User struct {
-	ID        int        `db:"id"`
-	Name      string     `db:"name"`
-	Telephone int        `db:"telephone"`
-	Avatar    string     `db:"avatar"`
-	CreatedAt time.Time  `db:"created_at"`
-	UpdatedAt time.Time  `db:"updated_at"`
-	DeletedAt *time.Time `db:"delete_at"`
+type User struct {
+	baseModel
+	UserID    int64  `db:"user_id"`
+	Username  string `db:"username"  json:"username"`
+	Password  string `db:"password"  json:"password"`
+	Email     string `db:"email"     json:"email"`
+	Telephone int    `db:"telephone" json:"telephone"`
+	Avatar    string `db:"avatar"    json:"avatar"`
+	NickName  string `db:"nick_name" json:"nick_name"`
 }
