@@ -8,7 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 
 	"blog-go/config"
-	"blog-go/dal/redis"
+	"blog-go/dal/rdb"
 	"blog-go/models"
 	"blog-go/routers"
 )
@@ -49,12 +49,12 @@ func main() {
 	defer models.Close()
 
 	// 链接redis
-	err = redis.InitRedis()
+	err = rdb.InitRedis()
 	if err != nil {
 		// 数据库连接失败，直接报错
 		panic(err)
 	}
-	defer redis.Close()
+	defer rdb.Close()
 
 	// 调用路由组
 	router := routers.SetupRouter()
