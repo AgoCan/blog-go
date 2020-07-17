@@ -26,9 +26,9 @@ type baseModel struct {
 }
 
 func judgeType(v string) string {
+	// 判断类型是否是数字，数字的类型和字符串在sql里要区别
 	index := strings.Contains(v, "int")
 	f := strings.Contains(v, "float")
-	fmt.Println(index, f, v)
 	var str string
 	if index {
 		str = "%v"
@@ -53,7 +53,7 @@ func ReflectTag(s interface{}, arg ...string) (resArray []string, err error) {
 
 	for i := 0; i < v.NumField(); i++ {
 		field := st.Field(i)
-		// 直接不添加到切片中，这样的目的
+		// 指定结构体的key直接不添加到切片中，这样的目的为了去掉时间戳的问题
 		if arg != nil {
 			flag := false
 			for k := 0; k < len(arg); k++ {
@@ -66,11 +66,13 @@ func ReflectTag(s interface{}, arg ...string) (resArray []string, err error) {
 				continue
 			}
 		}
+		// id和时间戳，时间戳是不转化的，自己在代码里面进行构建
 		if field.Name == "baseModel" {
 			continue
 		}
 
 		if !v.Field(i).IsZero() {
+			// 如果结构体有下一层，直接开始下一层的判断，构造
 			if v.Field(i).Type().Kind() == reflect.Struct {
 				structField := v.Field(i).Type()
 				for j := 0; j < structField.NumField(); j++ {

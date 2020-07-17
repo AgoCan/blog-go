@@ -7,6 +7,12 @@ db:
     username: "root"
     port: 3307
     host: "127.0.0.1"
+redis:
+  port: 6379
+  host: "localhost"
+  password: "123456"
+  db: 0
+
 log:
   # 默认路径是运行程序的目录
   #  logDirector: ./logging

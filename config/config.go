@@ -18,8 +18,9 @@ var Conf *Config
 
 // Config 配置文件
 type Config struct {
-	Db  DbConfig
-	Log LogConfig
+	Db    DbConfig
+	Log   LogConfig
+	Redis RedisConfig
 }
 
 // DbConfig 数据库配置文件
@@ -31,6 +32,14 @@ type DbConfig struct {
 		Port     string
 		Host     string
 	}
+}
+
+// RedisConfig redis配置文件
+type RedisConfig struct {
+	DB       string
+	Password string
+	Port     string
+	Host     string
 }
 
 // LogConfig 日志配置文件
@@ -66,6 +75,9 @@ var (
 	LogMaxBackups   int
 	LogMaxAge       int
 	LogLevel        string
+	RedisServer     string
+	RedisPassword   string
+	RedisDb         string
 )
 
 // 获取文件绝对路径
@@ -95,11 +107,15 @@ func InitConfig(opt *Option) (err error) {
 	MysqlConnect = Conf.Db.Mysql.Username + ":" + Conf.Db.Mysql.Password + "@tcp(" +
 		Conf.Db.Mysql.Host + ":" + Conf.Db.Mysql.Port + ")/" + Conf.Db.Mysql.DbName +
 		"?charset=utf8mb4&parseTime=True&loc=Local"
+
 	LogDirector = Conf.Log.LogDirector
 	if LogDirector == "" {
 		LogDirector = path.Join(path.Dir(getCurrPath()), "log")
 	}
 	Conf.Log.LogInfoFilePath = path.Join(LogDirector, viper.GetString("log.logInfoFilename"))
 
+	RedisServer = fmt.Sprintf("%s:%s", Conf.Redis.Host, Conf.Redis.Port)
+	RedisPassword = Conf.Redis.Password
+	RedisDb = Conf.Redis.DB
 	return nil
 }
