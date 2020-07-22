@@ -11,6 +11,7 @@ import (
 	"blog-go/dal/rdb"
 	"blog-go/models"
 	"blog-go/routers"
+	"blog-go/utils/session"
 )
 
 var (
@@ -18,6 +19,8 @@ var (
 )
 
 func main() {
+	session.Global.Close()
+	session.Global = session.NewCookieManagerOptions(session.NewInMemStore(), &session.CookieMngrOptions{AllowHTTP: true})
 	app := &cli.App{
 		Flags: []cli.Flag{
 			&cli.StringFlag{

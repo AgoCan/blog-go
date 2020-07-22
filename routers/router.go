@@ -1,7 +1,9 @@
 package routers
 
 import (
+	"blog-go/controllers/account"
 	"blog-go/middleware"
+	"blog-go/middleware/auth"
 	"blog-go/utils/response"
 
 	"github.com/gin-gonic/gin"
@@ -13,11 +15,13 @@ func SetupRouter() *gin.Engine {
 	if err := middleware.InitLogger(); err != nil {
 		panic(err)
 	}
-	router.Use(middleware.GinLogger(middleware.Logger),
-		middleware.GinRecovery(middleware.Logger, true))
+	// router.Use(middleware.GinLogger(middleware.Logger),
+	// 	middleware.GinRecovery(middleware.Logger, true))
 
-	router.GET("/hello", func(c *gin.Context) {
+	router.GET("/hello", auth.Middleware, func(c *gin.Context) {
 		response.Success(c, "hello world")
 	})
+	router.GET("/login", account.LoginHandler)
+	router.POST("/logout", account.LogoutHandler)
 	return router
 }
